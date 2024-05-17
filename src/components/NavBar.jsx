@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { CircleUser, Landmark, Menu, Search } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import {
@@ -11,44 +11,54 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useDispatch, useSelector } from "react-redux";
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
+  const user = useSelector((state) => state.user.user);
   return (
     <>
       <div className="flex  w-full flex-col">
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
           <nav className="hidden w-full flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-10 md:text-sm lg:gap-10">
-            <Link
+            <NavLink
               to="/"
-              className="flex items-center gap-2  text-lg font-semibold md:text-base"
+              className={
+                "flex items-center gap-2 text-lg font-semibold md:text-base text-foreground"}
             >
               <Landmark className="h-10 w-10" />
-              <span className="">Federal Bank</span>
-            </Link>
-            <Link
+              <span>Bengaluru Bank</span>
+            </NavLink>
+            <NavLink
               to="/dashboard"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-foreground transition-colors"
+                  : "text-muted-foreground transition-colors hover:text-foreground"
+              }
             >
               Dashboard
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
+              to="/account"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-foreground transition-colors"
+                  : "text-muted-foreground transition-colors hover:text-foreground"
+              }
+            >
+              Accounts
+            </NavLink>
+            <NavLink
               to="/transactions"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-foreground transition-colors"
+                  : "text-muted-foreground transition-colors hover:text-foreground"
+              }
             >
               Transactions
-            </Link>
-            <Link
-              to="/statement"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Statements
-            </Link>
-            <Link
-              to="/settings"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Settings
-            </Link>
+            </NavLink>
+
           </nav>
           <Sheet>
             <SheetTrigger asChild>
@@ -68,7 +78,7 @@ const Navbar = ({ user }) => {
                   className="flex items-center gap-2  text-lg font-semibold md:text-base"
                 >
                   <Landmark className="h-10 w-10" />
-                  <span className="">Federal Bank</span>
+                  <span className="">Bengaluru Bank</span>
                 </Link>
                 <Link
                   to="/dashboard"
@@ -81,18 +91,6 @@ const Navbar = ({ user }) => {
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Transactions
-                </Link>
-                <Link
-                  to="/statement"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Statements
-                </Link>
-                <Link
-                  to="/settings"
-                  className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Settings
                 </Link>
               </nav>
             </SheetContent>
@@ -121,18 +119,23 @@ const Navbar = ({ user }) => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <Link to="/user-profile"><DropdownMenuLabel>My Account</DropdownMenuLabel></Link>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuItem >Settings</DropdownMenuItem>
                   <DropdownMenuItem>Support</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link to="/login">
-                <Button className="bg-blue-600">Log in</Button>
-              </Link>
+              <>
+                <Link to="/login">
+                  <Button className="bg-blue-600">Log in</Button>
+                </Link>
+                <Link to="/signUp">
+                  <Button className="bg-blue-600">Sign up</Button>
+                </Link>
+              </>
             )}
           </div>
         </header>
